@@ -92,10 +92,19 @@
               ]
         },
         {
-            "type": "Microsoft.DevTestLab/labs/virtualnetworks",
+            "apiVersion": "2018-10-15-preview",
+            "type": "Microsoft.DevTestLab/labs",
+            "name": "[variables('labName')]",
+            "location": "[resourceGroup().location]", 
+            "resources": [
+              {
+            "type": "virtualnetworks",
             "apiVersion": "2018-09-15",
             "name": "[variables('vnetName')]",
             "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DevTestLab/labs', variables('labName'))]"
+              ],
             "properties": {
               "allowedSubnets": [
                 {
@@ -123,9 +132,9 @@
                   "virtualNetworkPoolName": "[variables('vnetName')]"
                 }
               ]
+              }
             }
-        }
-        
+         ]
       ]
 
 }    
