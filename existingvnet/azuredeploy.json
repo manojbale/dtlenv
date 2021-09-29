@@ -33,13 +33,13 @@
   },
   "resources": [
     {
-      "apiVersion": "2018-10-15-preview",
+      "apiVersion": "2018-10-15",
       "type": "Microsoft.DevTestLab/labs",
       "name": "manojbale",
       "location": "[resourceGroup().location]",
       "resources": [
         {
-          "apiVersion": "2018-10-15-preview",
+          "apiVersion": "2018-10-15",
           "name": "[parameters('newLabVirtualNetworkName')]",
           "type": "virtualNetworks",
           "dependsOn": [
