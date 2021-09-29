@@ -43,7 +43,7 @@
           "name": "[parameters('newLabVirtualNetworkName')]",
           "type": "virtualNetworks",
           "dependsOn": [
-            "[resourceId('Microsoft.DevTestLab/labs', manojbale]"
+            "[resourceId('Microsoft.DevTestLab/labs', parameters('newLabName')]"
           ],
           "properties": {
             "description": "Existing Compute virtual network associated as part of the lab creation process.",
