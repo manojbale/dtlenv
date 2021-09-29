@@ -1,0 +1,124 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+
+"parameters": {
+    "SecretName": {
+        "type": "string",
+        "metadata": {
+        "description": "Enter DevTest Lab user's key vault secret name."
+        }
+    }
+    },
+"functions": [],
+"variables": {
+    "suffix": "1",
+    "location": "[resourceGroup().location]",
+    "labName": "manojbale",
+    "vnetName": "[concat('mabaledtl-vnet', variables('suffix'))]",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]",
+    "subnetName": "[concat('mabaledtl-subnet', variables('suffix'))]",
+    "subnetId": "[concat(resourceId('Microsoft.Network/virtualNetworks/',variables('vnetName'),'/subnets/', variables('subnetName')))]",
+    "vnetIpPrefix": "10.0.0.0/20",
+    "subnetIpPrefix": "10.0.1.0/24",
+    "publicIpAddressName": "[concat('mabaledtl-publicip', variables('suffix'))]",
+    "bastionHostName": "[concat('mabaledtl-bastionhost', variables('suffix'))]",
+    "bastionSubnetName": "AzureBastionSubnet",
+    "bastionSubnetIpPrefix": "10.0.0.0/27"
+},
+"resources": [
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2020-05-01",
+      "name": "[variables('publicIpAddressName')]", 
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard"
+          },
+          "properties": {
+          "publicIPAllocationMethod": "Static"
+          }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2020-05-01",
+      "name": "[variables('vnetName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "addressSpace": {
+        "addressPrefixes": [
+          "[variables('vnetIpPrefix')]"
+        ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('SubnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('SubnetIpPrefix')]"
+            }
+          },
+          {
+            "name": "[variables('bastionSubnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('bastionSubnetIpPrefix')]"
+            }
+          }
+          ]
+        }
+    },
+    {
+      "type": "Microsoft.Network/bastionHosts",
+      "apiVersion": "2020-05-01",
+      "name": "[variables('bastionHostName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "IpConf",
+            "properties": {
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('bastionSubnetName'))]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpAddressName'))]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[variables('vnetId')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpAddressName'))]",
+//        "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('bastionSubnetName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DevTestLab/labs",
+      "apiVersion": "2018-10-15",
+      "name": "[variables('labName')]",
+      "location": "[variables('location')]",
+      "resources": [
+        {
+          "apiVersion": "2018-10-15",
+          "name": "[variables('vnetName')]",
+          "type": "virtualNetworks",
+          "dependsOn": [
+            "[resourceId('Microsoft.DevTestLab/labs', variables('labName'))]"
+          ],
+          "properties": {
+            "description": "Existing Compute virtual network associated as part of the lab creation process.",
+            "externalProviderResourceId": "[variables('vnetId')]",
+            "subnetOverrides": [
+              {
+                "name": "[variables('subnetName')]",
+                "resourceId": "[variables('SubnetId')]",
+                "useInVmCreationPermission": "Allow",
+                "usePublicIpAddressPermission": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
