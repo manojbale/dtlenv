@@ -88,9 +88,8 @@
           },
           "dependsOn": [
             "[variables('vnetId')]",
-            "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpAddressName'))]",
-    //        "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('bastionSubnetName'))]"
-          ]
+            "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpAddressName'))]"
+              ]
         },
         {
             "type": "Microsoft.DevTestLab/labs/virtualnetworks",
@@ -125,35 +124,8 @@
                 }
               ]
             }
-          }
-        /*{
-          "type": "Microsoft.DevTestLab/labs",
-          "apiVersion": "2018-10-15",
-          "name": "[variables('labName')]",
-          "location": "[variables('location')]",
-          "resources": [
-            {
-              "apiVersion": "2018-10-15",
-              "name": "[variables('vnetName')]",
-              "type": "virtualNetworks",
-            "dependsOn": [
-                "[resourceId('Microsoft.DevTestLab/labs', variables('labName'))]"
-              ],
-              "properties": {
-                "description": "Existing Compute virtual network associated as part of the lab creation process.",
-                "externalProviderResourceId": "[variables('vnetId')]",
-                "subnetOverrides": [
-                  {
-                    "name": "[variables('subnetName')]",
-                   // "resourceId": "[variables('SubnetId')]",
-                    "useInVmCreationPermission": "Allow",
-                    "usePublicIpAddressPermission": "Allow"
-                  }
-                ]
-              }
-            }
-          ]
-        }*/
+        }
+        
       ]
 
 }    
