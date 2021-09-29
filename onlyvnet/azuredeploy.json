@@ -36,8 +36,8 @@
 	},
 	"resources": [{
 		"apiVersion": "2018-10-15",
-		"name": "[parameters('newLabVirtualNetworkName')]",
-		"type": "virtualNetworks",
+		"name": "manojbale-vnet",
+		"type": "Microsoft.DevTestLab/labs/virtualnetworks",
 		"properties": {
 			"description": "Existing Compute virtual network associated as part of the lab creation process.",
 			"externalProviderResourceId": "/subscriptions/6fdeb125-3223-46ec-a84f-914e7a9a0a9f/resourceGroups/manojbale/providers/Microsoft.Network/virtualNetworks/manojbale-vnet",
