@@ -103,7 +103,8 @@
             "name": "[variables('vnetName')]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.DevTestLab/labs', variables('labName'))]"
+                "[resourceId('Microsoft.DevTestLab/labs', variables('labName'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
               ],
             "properties": {
               "allowedSubnets": [
