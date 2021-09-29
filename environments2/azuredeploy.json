@@ -92,7 +92,7 @@
               ]
         },
         {
-            "apiVersion": "2018-10-15-preview",
+            "apiVersion": "2018-10-15",
             "type": "Microsoft.DevTestLab/labs",
             "name": "[variables('labName')]",
             "location": "[resourceGroup().location]", 
