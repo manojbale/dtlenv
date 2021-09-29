@@ -1,0 +1,56 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"newLabName": {
+			"type": "string",
+			"defaultValue": "manojbale",
+			"metadata": {
+				"description": "The name of the new lab instance to be created."
+			}
+		},
+		"newLabVirtualNetworkName": {
+			"type": "string",
+			"defaultValue": "manojbale-vnet",
+			"metadata": {
+				"description": "The name of the new lab virtual network instance to be created with the new lab instance being created."
+			}
+		},
+		"existingVirtualNetworkId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/6fdeb125-3223-46ec-a84f-914e7a9a0a9f/resourceGroups/manojbale/providers/Microsoft.Network/virtualNetworks/manojbale-vnet",
+			"metadata": {
+				"description": "The resource ID pointing to an existing (compute) virtual network to be referenced by the new lab virtual network instance being created."
+			}
+		},
+		"existingSubnetName": {
+			"type": "string",
+			"defaultValue": "default",
+			"metadata": {
+				"description": "The name of an existing (compute) subnet instance to be configured for Lab VM creation."
+			}
+		}
+	},
+	"variables": {
+		"existingSubnetId": "[concat(parameters('existingVirtualNetworkId'), '/subnets/', parameters('existingSubnetName'))]"
+	},
+	"resources": [{
+		"apiVersion": "2018-10-15",
+		"name": "[parameters('newLabVirtualNetworkName')]",
+		"type": "virtualNetworks",
+		"dependsOn": [
+			"[resourceId('Microsoft.DevTestLab/labs', parameters('newLabName'))]"
+		],
+		"properties": {
+			"description": "Existing Compute virtual network associated as part of the lab creation process.",
+			"externalProviderResourceId": "/subscriptions/6fdeb125-3223-46ec-a84f-914e7a9a0a9f/resourceGroups/manojbale/providers/Microsoft.Network/virtualNetworks/manojbale-vnet",
+			"subnetOverrides": [{
+				"name": "default",
+				"resourceId": "/subscriptions/6fdeb125-3223-46ec-a84f-914e7a9a0a9f/resourceGroups/manojbale/providers/Microsoft.Network/virtualNetworks/manojbale-vnet/subnets/default",
+				"useInVmCreationPermission": "Allow",
+				"usePublicIpAddressPermission": "Allow"
+			}]
+		}
+
+	}]
+}
