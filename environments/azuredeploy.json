@@ -89,7 +89,7 @@
       "dependsOn": [
         "[variables('vnetId')]",
         "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpAddressName'))]",
-//        "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('bastionSubnetName'))]"
+        "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('bastionSubnetName'))]"
       ]
     },
     {
