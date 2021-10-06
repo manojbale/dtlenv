@@ -18,7 +18,7 @@
     "vnetName": "[concat('mabaledtl-vnet', variables('suffix'))]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]",
     "subnetName": "[concat('mabaledtl-subnet', variables('suffix'))]",
-    "subnetId": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'),'subnets', variables('subnetName'))]",
+    "subnetId": "[resourceId('Microsoft.Network/virtualNetworks/', variables('vnetName'),'subnets', variables('subnetName'))]",
     "vnetIpPrefix": "10.0.0.0/20",
     "subnetIpPrefix": "10.0.1.0/24",
     "publicIpAddressName": "[concat('mabaledtl-publicip', variables('suffix'))]",
